@@ -1,6 +1,6 @@
-# Netflix UI Clone — React & Express
+# StreamCove — React & Express
 
-Full-stack app with a Netflix-inspired streaming-style UI: sign up, sign in, and a protected browse view. Express holds users in memory with simple token sessions (for demos, not production).
+Full-stack app with a streaming-style UI: sign up, sign in, and a protected browse view. Express holds users in memory with simple token sessions (for demos, not production).
 
 ## Features
 
@@ -63,20 +63,20 @@ npm run preview
 
 ## Deploy (Railway + Vercel)
 
-- **API (Railway):** set the service **root directory** to `backend` so the build finds `package.json`. Start command: `npm start` (`node index.js`). Railway provides `PORT`.
+- **API (Railway):** set the service **root directory** to `backend` so the build finds `package.json`. Start command: `npm start` (`node index.js`). Railway provides `PORT`. For a neutral hostname, rename the Railway project and update `VITE_API_URL` in Vercel.
 - **Frontend (Vercel):** set env **`VITE_API_URL`** to your public Railway URL (no trailing slash, no `/api` suffix), then redeploy. `frontend/vercel.json` rewrites to `index.html` so deep links and refresh on routes like `/dashboard` load the SPA.
 
 ## Layout
 
 ```
-netflix/
+netflix/   (repo folder name; app brand is StreamCove)
 ├── backend/    Express API
 └── frontend/   React (Vite)
 ```
 
 ## Disclaimer
 
-For learning only. Not affiliated with Netflix. In-memory auth resets on restart; use a database, hashing, and proper security for real users.
+For learning only. Fictional brand; not a commercial streaming product. In-memory auth resets on restart; use a database, hashing, and proper security for real users.
 
 ## License
 

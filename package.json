@@ -1,5 +1,5 @@
 {
-  "name": "netflix-clone",
+  "name": "streamcove",
   "private": true,
   "scripts": {
     "start": "node backend/index.js",

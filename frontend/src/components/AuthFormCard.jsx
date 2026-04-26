@@ -61,7 +61,7 @@ function AuthFormCard({
         <button
           type="submit"
           disabled={wait}
-          className="mt-1 min-h-12 w-full touch-manipulation rounded-sm bg-red-600 text-[1.35rem] font-semibold leading-none tracking-[-0.01em] text-white enabled:hover:opacity-95 disabled:opacity-60 sm:min-h-[52px] sm:text-[1.6rem] md:text-[1.75rem]"
+          className="mt-1 min-h-12 w-full touch-manipulation rounded-sm bg-[#0d9488] text-[1.35rem] font-semibold leading-none tracking-[-0.01em] text-white enabled:hover:opacity-95 disabled:opacity-60 sm:min-h-[52px] sm:text-[1.6rem] md:text-[1.75rem]"
         >
           {wait ? 'Please wait…' : buttonLabel}
         </button>

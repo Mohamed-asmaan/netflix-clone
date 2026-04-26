@@ -16,7 +16,7 @@ function makeToken() {
 }
 
 app.get('/', (req, res) => {
-  res.json({ message: 'Netflix clone API' })
+  res.json({ message: 'StreamCove API' })
 })
 
 app.get('/health', (req, res) => {

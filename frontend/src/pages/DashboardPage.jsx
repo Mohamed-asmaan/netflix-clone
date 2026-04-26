@@ -49,7 +49,7 @@ function DashboardPage() {
 
   return (
     <main className="flex min-h-[100dvh] w-full max-w-full flex-col bg-[radial-gradient(circle_at_top,rgba(43,12,65,0.35),rgba(0,0,0,0.95)_40%),#000]">
-      <h1 className="sr-only">Netflix Dashboard</h1>
+      <h1 className="sr-only">StreamCove home</h1>
       <div className="w-full min-w-0 flex-1">
         <BrowseNavbar />
         <HeroBanner />

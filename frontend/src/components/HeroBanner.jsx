@@ -20,7 +20,7 @@ function HeroBanner() {
       <div className="pointer-events-none absolute inset-0" style={heroOverlay} aria-hidden />
       <div className="relative z-10 max-w-2xl px-4 py-10 sm:px-6 sm:py-16 md:px-10 md:py-24">
         <p className="text-xs tracking-[0.25em] text-zinc-300 sm:text-sm sm:tracking-[0.35em]">
-          NETFLIX SERIES
+          ORIGINAL SERIES
         </p>
         <h2 className="mt-2 break-words text-white sm:mt-3">KINGDOM</h2>
         <p className="mt-3 max-w-xl text-zinc-100 sm:mt-4 sm:text-lg">
