@@ -1,6 +1,5 @@
 import { posters } from '../assets/images/posterImports'
 
-// Same section titles and movie names as before; only images are mixed from your 15 files (some reused).
 const movieRows = [
   {
     title: 'You Might Also Like',

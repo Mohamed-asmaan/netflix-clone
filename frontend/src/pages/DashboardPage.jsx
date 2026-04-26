@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { serverUrl } from '../api'
+import { clearSession, getToken, setSession } from '../lib/auth'
 import BrowseFooter from '../components/BrowseFooter'
 import BrowseNavbar from '../components/BrowseNavbar'
 import HeroBanner from '../components/HeroBanner'
@@ -14,8 +15,9 @@ function DashboardPage() {
   const [showPage, setShowPage] = useState(false)
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
+    const token = getToken()
     if (token == null || token === '') {
+      clearSession()
       goTo('/login', { replace: true })
       return
     }
@@ -27,11 +29,14 @@ function DashboardPage() {
 
     axios
       .get(url, headerWithToken)
-      .then(() => {
+      .then((res) => {
+        if (res.data && res.data.user) {
+          setSession(token, res.data.user)
+        }
         setShowPage(true)
       })
       .catch(() => {
-        localStorage.removeItem('token')
+        clearSession()
         goTo('/login', { replace: true })
       })
   }, [goTo])

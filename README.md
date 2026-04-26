@@ -1,20 +1,20 @@
 # Netflix UI Clone — React & Express
 
-A full-stack learning project: a **Netflix-inspired** streaming-style interface with sign up, sign in, and a protected browse dashboard. The API uses Express with in-memory users and simple token-based sessions (not for production use).
+Full-stack app with a Netflix-inspired streaming-style UI: sign up, sign in, and a protected browse view. Express holds users in memory with simple token sessions (for demos, not production).
 
 ## Features
 
-- **Auth**: Register, log in, log out; session tokens stored in memory on the server
-- **Browse UI**: Hero banner, movie-style rows, navbar and footer in a dark streaming aesthetic
+- **Auth**: Register, log in, log out; tokens stored in memory on the server
+- **Browse UI**: Hero banner, carousels, navbar and footer
 - **Stack**: React 19, Vite, Tailwind CSS, React Router, Axios · Express 5, CORS
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) (LTS recommended)
+- [Node.js](https://nodejs.org/) (LTS)
 
 ## Run locally
 
-### 1. Backend (API)
+### Backend (API)
 
 ```bash
 cd backend
@@ -22,14 +22,11 @@ npm install
 node index.js
 ```
 
-Or from the repo root: `node backend/index.js` (if you already ran `cd backend` + `npm install` once).
+Default: [http://localhost:5000](http://localhost:5000) — set `PORT` to override (e.g. `set PORT=3000` on Windows).
 
-Default URL: [http://localhost:5000](http://localhost:5000)  
-Override port: `set PORT=3000` (Windows) or `export PORT=3000` (macOS/Linux).
+### Frontend
 
-### 2. Frontend
-
-In a second terminal:
+In another terminal:
 
 ```bash
 cd frontend
@@ -39,11 +36,13 @@ npm run dev
 
 Open the URL Vite prints (usually [http://localhost:5173](http://localhost:5173)).
 
-In development, the app calls `/api/...` and Vite **proxies** those requests to the backend (see `frontend/vite.config.js`). Run both servers for sign up, login, and the dashboard to work.
+The dev server proxies `/api` to the backend (`frontend/vite.config.js`). Run both processes for full auth and browse.
+
+**Pre-seeded login (in-memory, resets when the server restarts):** `demo@example.com` / `StreamDemo#9`
 
 ### Production build
 
-Set `VITE_API_URL` to your deployed API base URL (no trailing `/api` suffix; the app uses the same paths as the Express routes). Build the client:
+Set `VITE_API_URL` to your deployed API origin (no `/api` suffix). Then:
 
 ```bash
 cd frontend
@@ -51,49 +50,34 @@ npm run build
 npm run preview
 ```
 
-## API overview
+## API
 
 | Method | Path         | Description                          |
 |--------|--------------|--------------------------------------|
-| GET    | `/`          | Health: API name message             |
+| GET    | `/`          | Health / API name                    |
 | POST   | `/signup`    | Body: `name`, `email`, `password`    |
 | POST   | `/login`     | Body: `email`, `password`            |
 | POST   | `/logout`    | Header: `Authorization: Bearer <token>` |
 | GET    | `/dashboard` | Header: `Authorization: Bearer <token>` |
+| GET    | `/health`    | Simple status                        |
 
-## Deploy API to Railway (no Docker)
+## Deploy (Railway + Vercel)
 
-This repo is a **monorepo** (`backend/` and `frontend/`). Railway’s builder looks at the folder you set as the **root** of the service. It must be **`backend`**, or the build fails (“cannot find a build plan”).
+- **API (Railway):** set the service **root directory** to `backend` so the build finds `package.json`. Start command: `npm start` (`node index.js`). Railway provides `PORT`.
+- **Frontend (Vercel):** set env **`VITE_API_URL`** to your public Railway URL (no trailing slash, no `/api` suffix), then redeploy. `frontend/vercel.json` rewrites to `index.html` so deep links and refresh on routes like `/dashboard` load the SPA.
 
-1. In Railway: open your service → **Settings** → **Root directory** → set to **`backend`** (or use the “Set root directory” button on the error screen).
-2. **Start command** can stay the default: **`npm start`** (from `backend/package.json`, runs `node index.js`). Railway will set the **`PORT`** environment variable; the server already uses it.
-3. Deploy, then copy the public **API URL** (e.g. `https://xxxx.up.railway.app`).
-
-**Connect the Vercel frontend:** in the Vercel project → **Settings** → **Environment variables**, add:
-
-- **`VITE_API_URL`** = your full Railway API URL (**no** trailing slash, **no** `/api` on the end)
-
-Redeploy the frontend so the build picks up the variable.
-
-Health check: open `GET /` on your deployed API in the browser — you should see JSON from the service.
-
-## Project layout
+## Layout
 
 ```
 netflix/
-├── package.json   Optional helper at repo root (local use)
-├── backend/       Express API — **use this as Railway “root directory”**
-└── frontend/      React app (Vite) — e.g. deploy on Vercel
+├── backend/    Express API
+└── frontend/   React (Vite)
 ```
 
 ## Disclaimer
 
-This repository is for **educational purposes**. The visual design is inspired by Netflix; it is not affiliated with or endorsed by Netflix. User data is held in process memory and resets when the server restarts—**do not** use this auth pattern for real user accounts without a database, password hashing, and proper security hardening.
-
-## If Chrome says “Dangerous site” (Safe Browsing)
-
-That warning is from **Google**, not your code. As the **site owner**, verify the domain in [Google Search Console](https://search.google.com/search-console), then use Google’s “request review” / [report an incorrect block](https://safebrowsing.google.com/safebrowsing/report_error/) if needed. Clearing the flag can take time.
+For learning only. Not affiliated with Netflix. In-memory auth resets on restart; use a database, hashing, and proper security for real users.
 
 ## License
 
-Add a license if you open-source this repository (e.g. MIT).
+MIT

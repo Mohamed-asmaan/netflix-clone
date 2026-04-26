@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { serverUrl } from '../api'
+import { setSession } from '../lib/auth'
 import AuthFormCard from '../components/AuthFormCard'
 import AuthFooter from '../components/AuthFooter'
 import AuthHeader from '../components/AuthHeader'
@@ -34,16 +35,14 @@ function SignupPage() {
     return axios
       .post(url, body)
       .then((response) => {
-        localStorage.setItem('token', response.data.token)
-        goTo('/dashboard')
+        setSession(response.data.token, response.data.user)
+        goTo('/dashboard', { replace: true })
       })
       .catch((err) => {
         if (err.response && err.response.data && err.response.data.message) {
           setMessage(err.response.data.message)
         } else {
-          setMessage(
-            'Could not reach the API. In a separate terminal: cd backend, run node index.js, and leave that window open while you use the app.',
-          )
+          setMessage('Could not reach the server. Is the API running?')
         }
       })
   }

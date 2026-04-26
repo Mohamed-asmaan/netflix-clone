@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-// shared form for login and signup: parent gives fields and a function to run on submit
 function AuthFormCard({
   title,
   subtitle,
@@ -20,14 +19,12 @@ function AuthFormCard({
     if (onSubmit == null) {
       return
     }
-    // read all inputs from the form
     const form = e.currentTarget
     const formData = new FormData(form)
     const data = Object.fromEntries(formData)
 
     setWait(true)
     const result = onSubmit(data)
-    // if parent returns a Promise, wait for it; if not, stop waiting
     if (result != null && typeof result.then === 'function') {
       result.finally(function () {
         setWait(false)
