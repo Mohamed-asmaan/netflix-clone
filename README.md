@@ -66,7 +66,7 @@ npm run preview
 **Production app:** [https://streamcove.vercel.app](https://streamcove.vercel.app)
 
 - **API (Railway):** set the service **root directory** to `backend` so the build finds `package.json`. Start command: `npm start` (`node index.js`). Railway provides `PORT`. For a neutral hostname, rename the Railway project and update `VITE_API_URL` in Vercel.
-- **Frontend (Vercel):** set **`VITE_APP_URL`** to `https://streamcove.vercel.app` (no trailing slash) and **`VITE_API_URL`** to your public Railway API URL (no trailing slash, no `/api` suffix), then redeploy. `frontend/vercel.json` rewrites to `index.html` so deep links and refresh on routes like `/dashboard` load the SPA.
+- **Frontend (Vercel):** set **`VITE_APP_URL`** to `https://streamcove.vercel.app` (no trailing slash) and **`VITE_API_URL`** to `https://streamcove-production.up.railway.app` (no trailing slash, no `/api` suffix), then redeploy. `frontend/vercel.json` rewrites to `index.html` so deep links and refresh on routes like `/dashboard` load the SPA.
 
 ### Chrome “Dangerous site” / Google Safe Browsing
 

@@ -4,5 +4,5 @@ const defaultAppUrl = 'https://streamcove.vercel.app'
 export const appUrl = (import.meta.env.VITE_APP_URL || defaultAppUrl).replace(/\/$/, '')
 
 /** Fallback if VITE_API_URL is unset. */
-const productionApi = 'https://netflix-clone-production-291f.up.railway.app'
+const productionApi = 'https://streamcove-production.up.railway.app'
 export const serverUrl = isDev ? '/api' : import.meta.env.VITE_API_URL || productionApi
