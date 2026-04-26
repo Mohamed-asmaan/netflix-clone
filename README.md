@@ -69,13 +69,13 @@ This repo is a **monorepo** (`backend/` and `frontend/`). Railway’s builder lo
 2. **Start command** can stay the default: **`npm start`** (from `backend/package.json`, runs `node index.js`). Railway will set the **`PORT`** environment variable; the server already uses it.
 3. Deploy, then copy the public **API URL** (e.g. `https://xxxx.up.railway.app`).
 
-**Connect the Vercel frontend** (e.g. <https://netflix-clone-sandy-pi-24.vercel.app/>): in the Vercel project → **Settings** → **Environment variables**, add:
+**Connect the Vercel frontend:** in the Vercel project → **Settings** → **Environment variables**, add:
 
 - **`VITE_API_URL`** = your full Railway API URL (**no** trailing slash, **no** `/api` on the end)
 
 Redeploy the frontend so the build picks up the variable.
 
-Health check: open `GET /` in the browser — you should see JSON from the API.
+Health check: open `GET /` on your deployed API in the browser — you should see JSON from the service.
 
 ## Project layout
 
