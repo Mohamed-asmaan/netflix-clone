@@ -1,0 +1,8 @@
+{
+  "name": "netflix-clone",
+  "private": true,
+  "scripts": {
+    "start": "node backend/index.js",
+    "postinstall": "npm install --prefix ./backend"
+  }
+}

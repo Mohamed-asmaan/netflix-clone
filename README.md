@@ -22,6 +22,8 @@ npm install
 node index.js
 ```
 
+Or from the repo root: `node backend/index.js` (if you already ran `cd backend` + `npm install` once).
+
 Default URL: [http://localhost:5000](http://localhost:5000)  
 Override port: `set PORT=3000` (Windows) or `export PORT=3000` (macOS/Linux).
 
@@ -59,12 +61,29 @@ npm run preview
 | POST   | `/logout`    | Header: `Authorization: Bearer <token>` |
 | GET    | `/dashboard` | Header: `Authorization: Bearer <token>` |
 
+## Deploy API to Railway (no Docker)
+
+This repo is a **monorepo** (`backend/` and `frontend/`). Railway’s builder looks at the folder you set as the **root** of the service. It must be **`backend`**, or the build fails (“cannot find a build plan”).
+
+1. In Railway: open your service → **Settings** → **Root directory** → set to **`backend`** (or use the “Set root directory” button on the error screen).
+2. **Start command** can stay the default: **`npm start`** (from `backend/package.json`, runs `node index.js`). Railway will set the **`PORT`** environment variable; the server already uses it.
+3. Deploy, then copy the public **API URL** (e.g. `https://xxxx.up.railway.app`).
+
+**Connect the Vercel frontend** (e.g. <https://netflix-clone-sandy-pi-24.vercel.app/>): in the Vercel project → **Settings** → **Environment variables**, add:
+
+- **`VITE_API_URL`** = your full Railway API URL (**no** trailing slash, **no** `/api` on the end)
+
+Redeploy the frontend so the build picks up the variable.
+
+Health check: open `GET /` in the browser — you should see JSON from the API.
+
 ## Project layout
 
 ```
 netflix/
-├── backend/     Express server (`index.js`)
-└── frontend/    React app (Vite)
+├── package.json   Optional helper at repo root (local use)
+├── backend/       Express API — **use this as Railway “root directory”**
+└── frontend/      React app (Vite) — e.g. deploy on Vercel
 ```
 
 ## Disclaimer
