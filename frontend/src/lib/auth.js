@@ -1,5 +1,5 @@
-const TOKEN_KEY = 'netflix_token'
-const USER_KEY = 'netflix_user'
+const TOKEN_KEY = 'streamlab_demo_token'
+const USER_KEY = 'streamlab_demo_user'
 
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY)

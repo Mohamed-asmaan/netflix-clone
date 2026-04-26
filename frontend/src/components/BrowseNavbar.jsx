@@ -21,7 +21,6 @@ function BrowseNavbar() {
           ))}
         </nav>
       </div>
-      <div className="hidden text-sm text-zinc-300 sm:block">Kids | DVD | 🔍</div>
     </header>
   )
 }

@@ -26,6 +26,11 @@ app.get('/', (req, res) => {
   res.json({ message: 'Netflix clone API' })
 })
 
+// For monitors / transparency (learning project)
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', purpose: 'student-learning-api' })
+})
+
 // sign up: add a new user, then log them in
 app.post('/signup', (req, res) => {
   const name = req.body.name

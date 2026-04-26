@@ -90,6 +90,10 @@ netflix/
 
 This repository is for **educational purposes**. The visual design is inspired by Netflix; it is not affiliated with or endorsed by Netflix. User data is held in process memory and resets when the server restarts—**do not** use this auth pattern for real user accounts without a database, password hashing, and proper security hardening.
 
+## If Chrome says “Dangerous site” (Safe Browsing)
+
+That warning is from **Google**, not your code. As the **site owner**, verify the domain in [Google Search Console](https://search.google.com/search-console), then use Google’s “request review” / [report an incorrect block](https://safebrowsing.google.com/safebrowsing/report_error/) if needed. Clearing the flag can take time.
+
 ## License
 
 Add a license if you open-source this repository (e.g. MIT).
