@@ -8,7 +8,7 @@ function BrowseFooter() {
   const columns = [
     ['FAQ', 'Media Centre', 'Ways to Watch', 'Cookie Preferences', 'Speed Test'],
     ['Help Centre', 'Investor Relations', 'Terms of Use', 'Corporate Information', 'Legal Notices'],
-    ['Account', 'Jobs', 'Privacy', 'Contact Us', 'StreamCove originals'],
+    ['Account', 'Jobs', 'Privacy', 'Contact Us', 'Only on StreamCove'],
   ]
 
   return (
@@ -36,13 +36,13 @@ function BrowseFooter() {
         <div className="my-6 flex justify-center sm:my-8">
           <button
             type="button"
-            className="min-h-11 w-full max-w-sm touch-manipulation rounded-full bg-[#0d9488] px-8 py-3 text-base font-semibold text-white sm:w-auto sm:max-w-none sm:px-12 sm:text-[18px]"
+            className="min-h-11 w-full max-w-sm touch-manipulation rounded-full bg-red-600 px-8 py-3 text-base font-semibold text-white sm:w-auto sm:max-w-none sm:px-12 sm:text-[18px]"
           >
             Join now
           </button>
         </div>
 
-        <p className="note-text mb-5">This demo has no public support line — for learning only.</p>
+        <p className="note-text mb-5">Questions? This demo is for learning only — no support hotline.</p>
 
         <div className="grid grid-cols-1 gap-2 text-[13px] md:grid-cols-3 md:gap-10">
           {columns.map((links) => (

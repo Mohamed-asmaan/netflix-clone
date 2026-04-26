@@ -42,7 +42,7 @@ The dev server proxies `/api` to the backend (`frontend/vite.config.js`). Run bo
 
 ### Production build
 
-Set `VITE_API_URL` to your deployed API origin (no `/api` suffix). Then:
+Set **`VITE_APP_URL`** to your Vercel origin (e.g. `https://streamcove.vercel.app`, no trailing slash) and **`VITE_API_URL`** to your deployed API origin (no `/api` suffix). Then:
 
 ```bash
 cd frontend
@@ -63,8 +63,10 @@ npm run preview
 
 ## Deploy (Railway + Vercel)
 
+**Production app:** [https://streamcove.vercel.app](https://streamcove.vercel.app)
+
 - **API (Railway):** set the service **root directory** to `backend` so the build finds `package.json`. Start command: `npm start` (`node index.js`). Railway provides `PORT`. For a neutral hostname, rename the Railway project and update `VITE_API_URL` in Vercel.
-- **Frontend (Vercel):** set env **`VITE_API_URL`** to your public Railway URL (no trailing slash, no `/api` suffix), then redeploy. `frontend/vercel.json` rewrites to `index.html` so deep links and refresh on routes like `/dashboard` load the SPA.
+- **Frontend (Vercel):** set **`VITE_APP_URL`** to `https://streamcove.vercel.app` (no trailing slash) and **`VITE_API_URL`** to your public Railway API URL (no trailing slash, no `/api` suffix), then redeploy. `frontend/vercel.json` rewrites to `index.html` so deep links and refresh on routes like `/dashboard` load the SPA.
 
 ## Layout
 
