@@ -1,6 +1,7 @@
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { apiClient } from '../lib/apiClient'
+import { serverUrl } from '../api'
 import { clearSession, getToken, setSession } from '../lib/auth'
 import BrowseFooter from '../components/BrowseFooter'
 import BrowseNavbar from '../components/BrowseNavbar'
@@ -15,35 +16,29 @@ function DashboardPage() {
 
   useEffect(() => {
     const token = getToken()
-    if (token == null || token === '') {
+    if (!token) {
       clearSession()
       goTo('/login', { replace: true })
-      return undefined
+      return
     }
 
-    let cancelled = false
-
-    apiClient
-      .get('/dashboard')
+    axios
+      .get(serverUrl + '/dashboard', {
+        headers: { Authorization: 'Bearer ' + token },
+      })
       .then((res) => {
-        if (cancelled) return
         if (res.data && res.data.user) {
           setSession(token, res.data.user)
         }
         setShowPage(true)
       })
       .catch(() => {
-        if (cancelled) return
         clearSession()
         goTo('/login', { replace: true })
       })
-
-    return () => {
-      cancelled = true
-    }
   }, [goTo])
 
-  if (showPage === false) {
+  if (!showPage) {
     return (
       <div className="flex min-h-[100dvh] items-center justify-center bg-black text-white">Loading…</div>
     )

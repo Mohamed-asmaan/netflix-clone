@@ -1,77 +1,59 @@
 import axios from 'axios'
 import { serverUrl } from '../api'
 
+// Keys for localStorage (where we keep login info in the browser)
 const TOKEN_KEY = 'nc_session_token'
 const USER_KEY = 'nc_session_user'
-const LEGACY_TOKEN_KEYS = ['token', 'streamlab_demo_token']
-
-function migrateTokenIfNeeded() {
-  for (let i = 0; i < LEGACY_TOKEN_KEYS.length; i++) {
-    const k = LEGACY_TOKEN_KEYS[i]
-    const v = localStorage.getItem(k)
-    if (v != null && v !== '') {
-      localStorage.setItem(TOKEN_KEY, v)
-      localStorage.removeItem(k)
-      break
-    }
-  }
-}
 
 export function getToken() {
-  migrateTokenIfNeeded()
-  return localStorage.getItem(TOKEN_KEY)
+  let t = localStorage.getItem(TOKEN_KEY)
+  if (t) return t
+  // old demo key from earlier versions
+  t = localStorage.getItem('token')
+  if (t) {
+    localStorage.setItem(TOKEN_KEY, t)
+    localStorage.removeItem('token')
+  }
+  return t
 }
 
 export function getUser() {
   try {
     const raw = localStorage.getItem(USER_KEY)
-    return raw ? JSON.parse(raw) : null
+    if (!raw) return null
+    return JSON.parse(raw)
   } catch {
     return null
   }
 }
 
+// Call this after login or signup when the server sends back token + user
 export function setSession(token, user) {
-  if (token == null || token === '') {
-    return
-  }
+  if (!token) return
   localStorage.setItem(TOKEN_KEY, token)
-  if (user != null) {
+  if (user) {
     localStorage.setItem(USER_KEY, JSON.stringify(user))
   }
 }
 
-/** True if we have a token saved (may still be invalid on the server). */
-export function hasStoredToken() {
-  migrateTokenIfNeeded()
-  const t = localStorage.getItem(TOKEN_KEY)
-  return t != null && t !== ''
-}
-
-/**
- * Tell the server to forget this token, then always clear the browser.
- * Safe to call even if the network fails — the user wanted to sign out.
- */
-export async function logoutRemote() {
-  const token = getToken()
-  if (token) {
-    try {
-      await axios.post(`${serverUrl}/logout`, null, {
-        headers: { Authorization: 'Bearer ' + token },
-        timeout: 15000,
-      })
-    } catch {
-      // Still clear locally so the app does not stay "half logged in".
-    }
-  }
-  clearSession()
-}
-
+// Wipes the browser login data
 export function clearSession() {
   localStorage.removeItem(TOKEN_KEY)
   localStorage.removeItem(USER_KEY)
-  for (let i = 0; i < LEGACY_TOKEN_KEYS.length; i++) {
-    localStorage.removeItem(LEGACY_TOKEN_KEYS[i])
+  localStorage.removeItem('token')
+}
+
+// Calls the server logout then clears the browser (always clears even if the request fails)
+export async function signOut() {
+  const token = getToken()
+  if (token) {
+    try {
+      await axios.post(serverUrl + '/logout', {}, {
+        headers: { Authorization: 'Bearer ' + token },
+      })
+    } catch {
+      // ignore — we still clear below
+    }
   }
-  localStorage.removeItem('streamlab_demo_user')
+  clearSession()
 }

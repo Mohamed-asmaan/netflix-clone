@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useRedirectIfLoggedIn } from '../hooks/useRedirectIfLoggedIn'
-import { apiClient } from '../lib/apiClient'
-import { setSession } from '../lib/auth'
+import { serverUrl } from '../api'
+import { clearSession, getToken, setSession } from '../lib/auth'
 import AuthFormCard from '../components/AuthFormCard'
 import AuthFooter from '../components/AuthFooter'
 import AuthHeader from '../components/AuthHeader'
@@ -17,7 +17,41 @@ const signupFields = [
 function SignupPage() {
   const goTo = useNavigate()
   const [message, setMessage] = useState('')
-  useRedirectIfLoggedIn()
+  const [loading, setLoading] = useState(true)
+  const [alreadyLoggedIn, setAlreadyLoggedIn] = useState(false)
+  const [loggedInUser, setLoggedInUser] = useState(null)
+
+  // Same idea as login page — see if a saved token still works
+  useEffect(() => {
+    const token = getToken()
+    if (!token) {
+      setLoading(false)
+      return
+    }
+
+    axios
+      .get(serverUrl + '/dashboard', {
+        headers: { Authorization: 'Bearer ' + token },
+      })
+      .then((res) => {
+        setSession(token, res.data.user)
+        setLoggedInUser(res.data.user)
+        setAlreadyLoggedIn(true)
+      })
+      .catch(() => {
+        clearSession()
+        setAlreadyLoggedIn(false)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [])
+
+  function switchToAnotherAccount() {
+    clearSession()
+    setAlreadyLoggedIn(false)
+    setLoggedInUser(null)
+  }
 
   function onSignupForm(data) {
     setMessage('')
@@ -30,8 +64,8 @@ function SignupPage() {
       return
     }
 
-    return apiClient
-      .post('/signup', { name, email, password })
+    axios
+      .post(serverUrl + '/signup', { name, email, password })
       .then((response) => {
         setSession(response.data.token, response.data.user)
         goTo('/dashboard', { replace: true })
@@ -45,22 +79,56 @@ function SignupPage() {
       })
   }
 
+  if (loading) {
+    return (
+      <main className="flex min-h-[100dvh] w-full items-center justify-center bg-black text-white">
+        Loading…
+      </main>
+    )
+  }
+
   return (
     <main className="flex min-h-[100dvh] w-full max-w-full flex-col bg-[radial-gradient(90%_70%_at_0%_0%,rgba(198,40,58,0.38),rgba(92,14,26,0.26)_40%,rgba(0,0,0,0.98)_75%)]">
       <div className="w-full flex-1 px-4 pb-10 pt-[max(0.5rem,env(safe-area-inset-top))] sm:px-5 md:px-6">
         <AuthHeader />
         <AuthSiteNotice />
-        <AuthFormCard
-          title="Enter your info to sign up"
-          subtitle="Or sign in with your existing account."
-          fields={signupFields}
-          buttonLabel="Continue"
-          helperText="Already have an account?"
-          helperLinkText="Sign in"
-          helperLinkTo="/login"
-          onSubmit={onSignupForm}
-          error={message}
-        />
+
+        {alreadyLoggedIn ? (
+          <div className="mx-auto mt-6 w-full max-w-[min(100%,30rem)] rounded border border-white/15 bg-black/50 px-4 py-6 text-center text-white sm:px-6">
+            <p className="mb-1 text-lg font-semibold">You are already signed in</p>
+            <p className="mb-6 text-sm text-zinc-300">
+              {loggedInUser && loggedInUser.name ? loggedInUser.name : 'Session is active.'}
+            </p>
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <button
+                type="button"
+                onClick={() => goTo('/dashboard', { replace: true })}
+                className="rounded bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700"
+              >
+                Go to browse
+              </button>
+              <button
+                type="button"
+                onClick={switchToAnotherAccount}
+                className="rounded border border-white/30 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+              >
+                Use a different account
+              </button>
+            </div>
+          </div>
+        ) : (
+          <AuthFormCard
+            title="Enter your info to sign up"
+            subtitle="Or sign in with your existing account."
+            fields={signupFields}
+            buttonLabel="Continue"
+            helperText="Already have an account?"
+            helperLinkText="Sign in"
+            helperLinkTo="/login"
+            onSubmit={onSignupForm}
+            error={message}
+          />
+        )}
       </div>
       <AuthFooter />
     </main>

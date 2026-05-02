@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { getUser, logoutRemote } from '../lib/auth'
+import { getUser, signOut } from '../lib/auth'
 import BrandLogo from './BrandLogo'
 
 const navItems = ['TV Shows', 'Movies', 'New & Popular', 'My List']
@@ -14,7 +14,7 @@ function BrowseNavbar() {
     if (signingOut) return
     setSigningOut(true)
     try {
-      await logoutRemote()
+      await signOut()
       navigate('/login', { replace: true })
     } finally {
       setSigningOut(false)
