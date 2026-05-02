@@ -1,7 +1,6 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { serverUrl } from '../api'
+import { apiClient } from '../lib/apiClient'
 import { clearSession, getToken, setSession } from '../lib/auth'
 import BrowseFooter from '../components/BrowseFooter'
 import BrowseNavbar from '../components/BrowseNavbar'
@@ -19,26 +18,29 @@ function DashboardPage() {
     if (token == null || token === '') {
       clearSession()
       goTo('/login', { replace: true })
-      return
+      return undefined
     }
 
-    const url = serverUrl + '/dashboard'
-    const headerWithToken = {
-      headers: { Authorization: 'Bearer ' + token },
-    }
+    let cancelled = false
 
-    axios
-      .get(url, headerWithToken)
+    apiClient
+      .get('/dashboard')
       .then((res) => {
+        if (cancelled) return
         if (res.data && res.data.user) {
           setSession(token, res.data.user)
         }
         setShowPage(true)
       })
       .catch(() => {
+        if (cancelled) return
         clearSession()
         goTo('/login', { replace: true })
       })
+
+    return () => {
+      cancelled = true
+    }
   }, [goTo])
 
   if (showPage === false) {

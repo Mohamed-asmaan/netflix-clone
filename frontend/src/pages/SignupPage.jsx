@@ -1,7 +1,7 @@
-import axios from 'axios'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { serverUrl } from '../api'
+import { useRedirectIfLoggedIn } from '../hooks/useRedirectIfLoggedIn'
+import { apiClient } from '../lib/apiClient'
 import { setSession } from '../lib/auth'
 import AuthFormCard from '../components/AuthFormCard'
 import AuthFooter from '../components/AuthFooter'
@@ -17,6 +17,7 @@ const signupFields = [
 function SignupPage() {
   const goTo = useNavigate()
   const [message, setMessage] = useState('')
+  useRedirectIfLoggedIn()
 
   function onSignupForm(data) {
     setMessage('')
@@ -29,11 +30,8 @@ function SignupPage() {
       return
     }
 
-    const url = serverUrl + '/signup'
-    const body = { name, email, password }
-
-    return axios
-      .post(url, body)
+    return apiClient
+      .post('/signup', { name, email, password })
       .then((response) => {
         setSession(response.data.token, response.data.user)
         goTo('/dashboard', { replace: true })

@@ -11,6 +11,26 @@ let userList = [
 
 let loggedInUsers = {}
 
+/** One active session per email — old tokens stop working after a new login. */
+function revokeSessionsForEmail(emailLower) {
+  const keys = Object.keys(loggedInUsers)
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i]
+    if (loggedInUsers[key].email === emailLower) {
+      delete loggedInUsers[key]
+    }
+  }
+}
+
+function readBearerToken(req) {
+  const header = req.headers.authorization
+  if (header == null || typeof header !== 'string') {
+    return null
+  }
+  const match = header.match(/^Bearer\s+(\S+)/i)
+  return match ? match[1] : null
+}
+
 function makeToken() {
   return 't' + Date.now() + 'x' + Math.floor(Math.random() * 1e9)
 }
@@ -47,6 +67,7 @@ app.post('/signup', (req, res) => {
   }
   userList.push(newUser)
 
+  revokeSessionsForEmail(newUser.email)
   const token = makeToken()
   loggedInUsers[token] = { email: newUser.email, name: newUser.name }
 
@@ -79,6 +100,7 @@ app.post('/login', (req, res) => {
     return res.status(401).json({ message: 'Invalid email or password' })
   }
 
+  revokeSessionsForEmail(foundUser.email)
   const token = makeToken()
   loggedInUsers[token] = { email: foundUser.email, name: foundUser.name }
 
@@ -90,30 +112,22 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/logout', (req, res) => {
-  const header = req.headers.authorization
-  if (header == null) {
+  const token = readBearerToken(req)
+  if (token == null || token === '') {
     return res.status(401).json({ message: 'No token provided' })
   }
-  if (header.indexOf('Bearer ') !== 0) {
-    return res.status(401).json({ message: 'No token provided' })
-  }
-  const token = header.substring(7)
   if (loggedInUsers[token] == null) {
-    return res.status(401).json({ message: 'Invalid or expired session' })
+    return res.status(204).send()
   }
   delete loggedInUsers[token]
   res.json({ message: 'Logged out' })
 })
 
 app.get('/dashboard', (req, res) => {
-  const header = req.headers.authorization
-  if (header == null) {
+  const token = readBearerToken(req)
+  if (token == null || token === '') {
     return res.status(401).json({ message: 'No token provided' })
   }
-  if (header.indexOf('Bearer ') !== 0) {
-    return res.status(401).json({ message: 'No token provided' })
-  }
-  const token = header.substring(7)
   const user = loggedInUsers[token]
   if (user == null) {
     return res.status(401).json({ message: 'Invalid or expired session' })
