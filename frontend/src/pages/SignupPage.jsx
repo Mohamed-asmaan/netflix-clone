@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { serverUrl } from '../api'
+import { friendlyNetworkError, serverUrl } from '../api'
 import { clearSession, getToken, setSession } from '../lib/auth'
 import AuthFormCard from '../components/AuthFormCard'
 import AuthFooter from '../components/AuthFooter'
@@ -73,7 +73,7 @@ function SignupPage() {
         if (err.response && err.response.data && err.response.data.message) {
           setMessage(err.response.data.message)
         } else {
-          setMessage('Could not reach the server. Is the API running?')
+          setMessage(friendlyNetworkError())
         }
       })
   }

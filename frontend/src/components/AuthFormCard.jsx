@@ -44,7 +44,7 @@ function AuthFormCard({
       <p className="mb-6 break-words font-medium leading-snug text-zinc-200">{subtitle}</p>
 
       {error && error !== '' ? (
-        <p className="note-text mb-4 text-red-400" role="alert">
+        <p className="note-text mb-4 break-words text-red-400" role="alert">
           {error}
         </p>
       ) : null}

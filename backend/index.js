@@ -2,7 +2,14 @@ const express = require('express')
 const cors = require('cors')
 
 const app = express()
-app.use(cors())
+// Let any normal browser tab (e.g. Vercel) call this API — explicit headers help some networks
+app.use(
+  cors({
+    origin: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+)
 app.use(express.json())
 
 let userList = [
