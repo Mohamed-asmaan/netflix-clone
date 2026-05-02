@@ -26,13 +26,13 @@ function DashboardPage() {
       .get(serverUrl + '/dashboard', {
         headers: { Authorization: 'Bearer ' + token },
       })
-      .then((res) => {
+      .then(function (res) {
         if (res.data && res.data.user) {
           setSession(token, res.data.user)
         }
         setShowPage(true)
       })
-      .catch(() => {
+      .catch(function () {
         clearSession()
         goTo('/login', { replace: true })
       })

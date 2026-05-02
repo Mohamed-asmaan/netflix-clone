@@ -32,16 +32,15 @@ function LoginPage() {
       .get(serverUrl + '/dashboard', {
         headers: { Authorization: 'Bearer ' + token },
       })
-      .then((res) => {
+      .then(function (res) {
         setSession(token, res.data.user)
         setLoggedInUser(res.data.user)
         setAlreadyLoggedIn(true)
+        setLoading(false)
       })
-      .catch(() => {
+      .catch(function () {
         clearSession()
         setAlreadyLoggedIn(false)
-      })
-      .finally(() => {
         setLoading(false)
       })
   }, [])
@@ -64,11 +63,11 @@ function LoginPage() {
 
     axios
       .post(serverUrl + '/login', { email, password })
-      .then((response) => {
+      .then(function (response) {
         setSession(response.data.token, response.data.user)
         goTo('/dashboard', { replace: true })
       })
-      .catch((err) => {
+      .catch(function (err) {
         if (err.response && err.response.data && err.response.data.message) {
           setMessage(err.response.data.message)
         } else {

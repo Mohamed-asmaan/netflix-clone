@@ -10,15 +10,14 @@ function BrowseNavbar() {
   const [signingOut, setSigningOut] = useState(false)
   const user = getUser()
 
-  async function handleSignOut() {
+  function handleSignOut() {
     if (signingOut) return
     setSigningOut(true)
-    try {
-      await signOut()
+
+    signOut().then(function () {
       navigate('/login', { replace: true })
-    } finally {
       setSigningOut(false)
-    }
+    })
   }
 
   return (

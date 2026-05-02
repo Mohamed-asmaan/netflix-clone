@@ -18,11 +18,11 @@ export function getToken() {
 }
 
 export function getUser() {
+  const raw = localStorage.getItem(USER_KEY)
+  if (!raw) return null
   try {
-    const raw = localStorage.getItem(USER_KEY)
-    if (!raw) return null
     return JSON.parse(raw)
-  } catch {
+  } catch (e) {
     return null
   }
 }
@@ -43,17 +43,26 @@ export function clearSession() {
   localStorage.removeItem('token')
 }
 
-// Calls the server logout then clears the browser (always clears even if the request fails)
-export async function signOut() {
+// Log out on the server, then clear the browser (clear happens even if the request fails)
+export function signOut() {
   const token = getToken()
-  if (token) {
-    try {
-      await axios.post(serverUrl + '/logout', {}, {
-        headers: { Authorization: 'Bearer ' + token },
-      })
-    } catch {
-      // ignore — we still clear below
-    }
+  if (!token) {
+    clearSession()
+    return Promise.resolve()
   }
-  clearSession()
+
+  return axios
+    .post(
+      serverUrl + '/logout',
+      {},
+      {
+        headers: { Authorization: 'Bearer ' + token },
+      }
+    )
+    .then(function () {
+      clearSession()
+    })
+    .catch(function () {
+      clearSession()
+    })
 }
