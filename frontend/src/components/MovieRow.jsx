@@ -3,7 +3,7 @@ function MovieRow({ title, movies }) {
     <div className="mb-8 sm:mb-10">
       <h2 className="mb-3 break-words text-white sm:mb-4">{title}</h2>
       <div
-        className="-mx-4 flex touch-pan-x snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain px-4 pb-2 [scrollbar-width:thin] sm:mx-0 sm:gap-3 sm:px-0"
+        className="-mx-3 flex touch-pan-x snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain px-3 pb-2 [scrollbar-width:thin] sm:-mx-4 sm:gap-3 sm:px-4 md:mx-0 md:px-0"
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {movies.map((movie) => (

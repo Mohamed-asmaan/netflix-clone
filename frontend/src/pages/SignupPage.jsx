@@ -80,36 +80,36 @@ function SignupPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-[100dvh] w-full items-center justify-center bg-black text-white">
+      <main className="flex min-h-[100dvh] w-full items-center justify-center bg-black px-4 text-center text-white">
         Loading…
       </main>
     )
   }
 
   return (
-    <main className="flex min-h-[100dvh] w-full max-w-full flex-col bg-[radial-gradient(90%_70%_at_0%_0%,rgba(198,40,58,0.38),rgba(92,14,26,0.26)_40%,rgba(0,0,0,0.98)_75%)]">
-      <div className="w-full flex-1 px-4 pb-10 pt-[max(0.5rem,env(safe-area-inset-top))] sm:px-5 md:px-6">
+    <main className="flex min-h-[100dvh] w-full max-w-full flex-col overflow-x-hidden bg-[radial-gradient(90%_70%_at_0%_0%,rgba(198,40,58,0.38),rgba(92,14,26,0.26)_40%,rgba(0,0,0,0.98)_75%)]">
+      <div className="w-full min-w-0 max-w-full flex-1 overflow-x-hidden px-4 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-[max(0.5rem,env(safe-area-inset-top))] sm:px-5 md:px-6">
         <AuthHeader />
         <AuthSiteNotice />
 
         {alreadyLoggedIn ? (
-          <div className="mx-auto mt-6 w-full max-w-[min(100%,30rem)] rounded border border-white/15 bg-black/50 px-4 py-6 text-center text-white sm:px-6">
+          <div className="mx-auto mt-6 w-full min-w-0 max-w-[min(100%,30rem)] rounded border border-white/15 bg-black/50 px-4 py-6 text-center text-white sm:px-6">
             <p className="mb-1 text-lg font-semibold">You are already signed in</p>
-            <p className="mb-6 text-sm text-zinc-300">
+            <p className="mb-6 break-words text-sm text-zinc-300">
               {loggedInUser && loggedInUser.name ? loggedInUser.name : 'Session is active.'}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
               <button
                 type="button"
                 onClick={() => goTo('/dashboard', { replace: true })}
-                className="rounded bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700"
+                className="min-h-11 w-full touch-manipulation rounded bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700 sm:w-auto"
               >
                 Go to browse
               </button>
               <button
                 type="button"
                 onClick={switchToAnotherAccount}
-                className="rounded border border-white/30 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+                className="min-h-11 w-full touch-manipulation rounded border border-white/30 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10 sm:w-auto"
               >
                 Use a different account
               </button>

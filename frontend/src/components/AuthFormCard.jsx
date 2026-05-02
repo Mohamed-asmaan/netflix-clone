@@ -26,18 +26,22 @@ function AuthFormCard({
     setWait(true)
     const result = onSubmit(data)
     if (result != null && typeof result.then === 'function') {
-      result.finally(function () {
-        setWait(false)
-      })
+      result
+        .then(function () {
+          setWait(false)
+        })
+        .catch(function () {
+          setWait(false)
+        })
     } else {
       setWait(false)
     }
   }
 
   return (
-    <section className="mx-auto mt-6 w-full max-w-[min(100%,30rem)] text-white sm:mt-9 md:mt-12">
+    <section className="mx-auto mt-6 w-full min-w-0 max-w-[min(100%,30rem)] text-white sm:mt-9 md:mt-12">
       <h1 className="mb-2 break-words text-white">{title}</h1>
-      <p className="mb-6 font-medium leading-snug text-zinc-200">{subtitle}</p>
+      <p className="mb-6 break-words font-medium leading-snug text-zinc-200">{subtitle}</p>
 
       {error && error !== '' ? (
         <p className="note-text mb-4 text-red-400" role="alert">
@@ -61,7 +65,7 @@ function AuthFormCard({
         <button
           type="submit"
           disabled={wait}
-          className="mt-1 min-h-12 w-full touch-manipulation rounded-sm bg-red-600 text-[1.35rem] font-semibold leading-none tracking-[-0.01em] text-white enabled:hover:opacity-95 disabled:opacity-60 sm:min-h-[52px] sm:text-[1.6rem] md:text-[1.75rem]"
+          className="mt-1 min-h-12 w-full touch-manipulation rounded-sm bg-red-600 text-base font-semibold leading-tight text-white enabled:hover:opacity-95 disabled:opacity-60 sm:min-h-[52px] sm:text-[1.5rem] md:text-[1.65rem]"
         >
           {wait ? 'Please wait…' : buttonLabel}
         </button>

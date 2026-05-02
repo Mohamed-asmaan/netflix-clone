@@ -4,7 +4,7 @@ function AuthFooter() {
       <div className="w-full px-4 sm:px-6 md:px-10">
         <p className="note-text mb-6">Questions? This demo is for learning — no call centre or live support.</p>
 
-        <div className="mb-8 grid grid-cols-2 gap-y-4 md:grid-cols-4">
+        <div className="mb-8 grid grid-cols-1 gap-y-3 sm:grid-cols-2 md:grid-cols-4">
           <a href="#" className="note-text no-underline hover:text-white">
             FAQ
           </a>

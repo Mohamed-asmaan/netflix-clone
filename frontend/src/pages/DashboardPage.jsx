@@ -40,14 +40,16 @@ function DashboardPage() {
 
   if (!showPage) {
     return (
-      <div className="flex min-h-[100dvh] items-center justify-center bg-black text-white">Loading…</div>
+      <div className="flex min-h-[100dvh] items-center justify-center bg-black px-4 text-center text-white">
+        Loading…
+      </div>
     )
   }
 
   return (
-    <main className="flex min-h-[100dvh] w-full max-w-full flex-col bg-[radial-gradient(circle_at_top,rgba(43,12,65,0.35),rgba(0,0,0,0.95)_40%),#000]">
+    <main className="flex min-h-[100dvh] w-full max-w-full flex-col overflow-x-hidden bg-[radial-gradient(circle_at_top,rgba(43,12,65,0.35),rgba(0,0,0,0.95)_40%),#000]">
       <h1 className="sr-only">StreamCove home</h1>
-      <div className="w-full min-w-0 flex-1">
+      <div className="w-full min-w-0 flex-1 overflow-x-hidden">
         <BrowseNavbar />
         <HeroBanner />
 
